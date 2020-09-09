@@ -1,6 +1,12 @@
 <template>
   <div class="about">
-    <h1>quiz4fun</h1>
+    <quiz-for-fun></quiz-for-fun>
 
   </div>
 </template>
+<script>
+import QuizForFun from "@/components/quiz-for-fun";
+export default {
+  components: {QuizForFun}
+}
+</script>
