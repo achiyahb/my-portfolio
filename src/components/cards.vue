@@ -1,66 +1,67 @@
 <template>
-
   <v-container
-            dir="rtl"
+      dir="rtl"
   >
-    <div
-        style="display: grid;grid-gap: 1rem;grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));">
-    <div
-
-        v-for="(card, i) in slides"
-        :key="i"
- @click="projectCard()"
-    >
-
-      <v-card
-          :class="`rounded-xl`"
-          max-width="35rem"
-          style="justify-items: stretch"
-          dir="rtl"
-height="250px"
-      >
-        <v-card-title class="title">
-          <p>
-            {{ card.title }}
-          </p>
-        </v-card-title>
-        <div style="display: grid;grid-template-columns: 2fr 1fr">
-          <div>
-            <v-card-subtitle style="padding: 0 1.5rem 0 0">
-              <p class="tab">
-                {{ card.subtitle }}
+    <section id="cards">
+      <div
+          style="display: grid;grid-gap: 1rem;grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));">
+        <div
+            v-for="(card, i) in slides"
+            :key="i"
+            @click="projectCard(i)"
+        >
+          <v-card
+              :class="`rounded-xl`"
+              max-width="35rem"
+              style="justify-items: stretch"
+              dir="rtl"
+              height="250px"
+          >
+            <v-card-title class="title">
+              <p>
+                {{ card.title }}
               </p>
-            </v-card-subtitle>
-          </div>
-          <div :style="` padding: 0 1rem 1rem 1rem;height: 60px; width: 100px`">
-            <div v-for="img of card.pics" style="width: 3rem; justify-items: stretch; justify-content: stretch">
-              <v-img
-                   style="margin-bottom: 1rem"
-                  :src="require(`../assets/${img}`)"
-              ></v-img>
+            </v-card-title>
+            <div style="display: grid;grid-template-columns: 2fr 1fr">
+              <div>
+                <v-card-subtitle style="padding: 0 1.5rem 0 0">
+                  <p class="tab">
+                    {{ card.subtitle }}
+                  </p>
+                </v-card-subtitle>
+              </div>
+              <div :style="`padding: 0 1rem 1rem 1rem;height: 60px; width: 100px`">
+                <div v-for="img of card.pics" style="width: 3rem; justify-items: stretch; justify-content: stretch">
+                  <v-img
+                      style="margin-bottom: 1rem"
+                      :src="require(`../assets/${img}`)"
+                  ></v-img>
+                </div>
+              </div>
             </div>
-          </div>
+          </v-card>
         </div>
-      </v-card>
-    </div>
-    </div>
+      </div>
+    </section>
     <section id="projectCard">
       <projectCard
+          :index="index"
+          @close="closeCard"
           v-if="!projectCardOff"
       ></projectCard>
     </section>
-
   </v-container>
-
 </template>
 
 <script>
 import projectCard from "./projectCard"
+
 export default {
   name: "carousel",
   components: {projectCard},
   data: () => ({
-    projectCardOff:true,
+    index: null,
+    projectCardOff: true,
     colors: [
       'indigo',
       'warning',
@@ -82,7 +83,8 @@ export default {
       {
         title: 'Achiya-Games',
         pics: ['js.png', 'vue.png'],
-        subtitle: 'המשחקים שלי \n אפליקציה שבניתי בזמני הפנוי \n נטו מתוך תשוקה לאתגר ולקוד'},
+        subtitle: 'המשחקים שלי \n אפליקציה שבניתי בזמני הפנוי \n נטו מתוך תשוקה לאתגר ולקוד'
+      },
       {
         title: 'BullShot',
         pics: ['vuex.png', 'firebase.png'],
@@ -96,13 +98,23 @@ export default {
       {
         title: 'myPortfolio',
         pics: ['css3.png', 'vuetify.webp'],
-        subtitle: 'תיק העבודות שלי \n בוא אתם צופים כעת'},
+        subtitle: 'תיק העבודות שלי \n בוא אתם צופים כעת'
+      },
     ],
   }),
-  methods:{
-    projectCard(){
+  methods: {
+    projectCard(i) {
+      this.projectCardOff = true
+
+      this.index = i
       this.projectCardOff = false
       this.$vuetify.goTo('#projectCard')
+    },
+    closeCard() {
+      this.$vuetify.goTo('#cards')
+      setTimeout(() => {
+        this.projectCardOff = true
+      }, 50)
     }
   }
 }
