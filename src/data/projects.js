@@ -76,7 +76,7 @@ const bullshot= {
         "הפקתי תועלת וניסיון מעצם הכניסה והתעמקות בקוד של מפתח אחר\n" +
         "זו יכולת חשובה בעיניי, מתוך הנחה שאצטרך לעשות זאת עוד בעתיד",
     pics: ['vuex.png','css3.png', 'firebase.png'],
-    appPic:['calculator.jpeg'],
+    appPic:['bullshot.jpeg'],
     video:'HWUrW1Ag-xE',
     noVideo:false
 }

@@ -5,8 +5,8 @@
         @aboutMe="$vuetify.goTo('#about-me')"
     />
     <section id="my-projects">
-<parallax :picture="'computer'" :title="'הפרוייקטים שלי'"></parallax>
-    <Cards></Cards>
+<h1 style="text-align: center">הפרוייקטים שלי</h1>
+    <Cards :windowInnerWidth="windowInnerWidth"></Cards>
     </section>
     <section id="about-me">
     <parallax :picture="'logo'" :title="'קצת עליי'"></parallax>
@@ -30,11 +30,23 @@ export default {
     Cards,
     HelloWorld
   },
+  data:()=>({
+    windowInnerWidth: null
+  }),
   methods:{
-    myProject(){
-
+    onResize() {
+      this.windowInnerWidth = window.innerWidth
     }
-  }
+  },
+  created() {
+    this.windowInnerWidth = window.innerWidth
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+
 }
 </script>
 

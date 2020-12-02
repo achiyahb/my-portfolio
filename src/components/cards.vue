@@ -10,12 +10,16 @@
             :key="i"
             @click="projectCard(i)"
         >
+          <section :id="'card' + i">
+          <v-hover>
+            <template v-slot="{ hover }">
           <v-card
               :class="`rounded-xl`"
+              :elevation="hover ? 24 : 0"
               max-width="35rem"
-              style="justify-items: stretch"
+              style="justify-items: stretch;cursor: pointer"
               dir="rtl"
-              height="250px"
+              :min-height="'250px'"
           >
             <v-card-title class="title">
               <p>
@@ -30,7 +34,7 @@
                   </p>
                 </v-card-subtitle>
               </div>
-              <div :style="`padding: 0 1rem 1rem 1rem;height: 60px; width: 100px`">
+              <div style="padding: 0 1rem 1rem 1rem;height: 60px; width: 100px">
                 <div v-for="img of card.pics" style="width: 3rem; justify-items: stretch; justify-content: stretch">
                   <v-img
                       style="margin-bottom: 1rem"
@@ -39,13 +43,18 @@
                 </div>
               </div>
             </div>
+            <mobile-card :index="index" v-if="windowInnerWidth < 700 && mobileCardOpen && index === i"></mobile-card>
           </v-card>
+            </template>
+          </v-hover>
+          </section>
         </div>
       </div>
     </section>
     <section id="projectCard">
       <projectCard
           :index="index"
+          :windowInnerWidth="windowInnerWidth"
           @close="closeCard"
           v-if="!projectCardOff"
       ></projectCard>
@@ -55,13 +64,17 @@
 
 <script>
 import projectCard from "./projectCard"
+import MobileCard from "@/components/mobileCard";
 
 export default {
   name: "carousel",
-  components: {projectCard},
+  components: {MobileCard, projectCard},
+  props: ['windowInnerWidth'],
   data: () => ({
+    mobileCardOpen: false,
     index: null,
     projectCardOff: true,
+    windowInnerWidth:null,
     colors: [
       'indigo',
       'warning',
@@ -104,19 +117,34 @@ export default {
   }),
   methods: {
     projectCard(i) {
+      if (this.windowInnerWidth < 700) {
+        this.openMobileCard(i)
+        return
+      }
       this.projectCardOff = true
 
       this.index = i
       this.projectCardOff = false
-      this.$vuetify.goTo('#projectCard')
     },
     closeCard() {
-      this.$vuetify.goTo('#cards')
       setTimeout(() => {
         this.projectCardOff = true
       }, 50)
-    }
+    },
+    openMobileCard(i) {
+      this.mobileCardOpen = false
+      if (this.index === i) {
+        this.index = null
+        return
+      }
+      this.index = i
+      this.mobileCardOpen = true
+      setTimeout(() => {
+        this.$vuetify.goTo(`#card${i}`)
+      }, 50)
+    },
   }
+
 }
 
 </script>
@@ -140,3 +168,6 @@ export default {
 }
 
 </style>
+
+
+

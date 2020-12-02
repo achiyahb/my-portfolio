@@ -1,7 +1,6 @@
 <template>
   <v-container >
-
-      <v-card dir="rtl" >
+    <v-card dir="rtl" >
         <v-row>
           <v-spacer></v-spacer>
           <a style="cursor: pointer">
@@ -52,18 +51,16 @@
           </div>
         </div>
           <div v-if="!project.noVideo">
-            <div style="padding-top: 4rem">
+            <div :style="`${windowInnerWidth < 700 ?'':'padding-top: 4rem'}`">
               <iframe width="266.666666" height="200"
                       :src="`https://www.youtube.com/embed/${project.video}`">
               </iframe>
             </div>
             <div style="padding-top: 1rem">
-              <div v-for="imgApp of project.appPic">
                 <v-img width="170"
                        style="margin-bottom: 1rem"
-                       :src="require(`../assets/${imgApp}`)"
+                       :src="require(`../assets/${project.appPic}`)"
                 ></v-img>
-              </div>
             </div>
           </div>
         </div>
@@ -76,17 +73,13 @@ import projects from "@/data/projects";
 
 export default {
   name: "AboutMe",
-  props: ['index'],
+  props: ['index','windowInnerWidth'],
   data: () => ({
-    windowInnerWidth:null,
     project: {}
   }),
   methods:{
     closeCard(){
       this.$emit('close', 'click')
-    },
-    onResize() {
-      this.windowInnerWidth = window.innerWidth
     }
   },
   watch:{
@@ -96,13 +89,7 @@ export default {
   },
   created() {
     this.project = projects.getProjectById(this.index)
-    this.windowInnerWidth = window.innerWidth
-  },
-  mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
-  },
+  }
 }
 </script>
 
